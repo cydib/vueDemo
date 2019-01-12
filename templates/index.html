@@ -22,16 +22,21 @@
         <input v-model="text">
         {{ text }}<br>
         {{ test() }}
+        <ul>
+            <li v-for="value in firut">{{ value }}</li>
+        </ul>
+        firut: {{ firut }}
 
     </div>
 {% endverbatim myblock %}
 <script>
-    new Vue({
+    var app = new Vue({
         el: "#app",
         data: {
             info: "this the first vue app",
             number: 11,
-            text: "text123"
+            text: "text123",
+            firut: [],
         },
         methods: {
             add: function () {
@@ -54,11 +59,12 @@
                 body: JSON.stringify({
                     content: "这里是body体"
                 })
-            }).then(function (response) {
-                return response.json();
-            }).then(
-                console.log("test")
-            )
+            }).then(function (respone) {
+                return respone.json();
+            }).then(function (json){
+                console.log(json)
+                app.firut = json
+            })
         },
     });
 </script>
