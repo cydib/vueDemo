@@ -22,6 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('demo1/', views.index),
     path('get/array', views.get_array),
-    # path('get/json', views.get_json),
+    path('search/', views.search),
 
 ]

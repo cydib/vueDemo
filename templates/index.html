@@ -18,14 +18,25 @@
         {{ info }}<br>
         {{ number }}<br>
         <button @click="add">add</button>
-        <br>
         <input v-model="text">
         {{ text }}<br>
         {{ test() }}
         <ul>
             <li v-for="value in firut">{{ value }}</li>
         </ul>
-        firut: {{ firut }}
+        firut: {{ firut }}<br>
+
+        firstName: <input v-model="firstName"><br>
+        lastName: <input v-model="lastName"><br>
+        fullNameComputed: {{ fullNameComputed }}<br>
+        fullNameMethod: {{ fullNameMethod() }}<br>
+        fullNameWatch: {{ fullNameWatch }}<br>
+
+        key: <input v-model="key"><br>
+        results:
+        <ul>
+            <li v-for="item in results" :key="item">{{ item }}</li>
+        </ul>
 
     </div>
 {% endverbatim myblock %}
@@ -37,6 +48,11 @@
             number: 11,
             text: "text123",
             firut: [],
+            firstName: "",
+            lastName: "",
+            fullNameWatch: "",
+            key: "",
+            results: [],
         },
         methods: {
             add: function () {
@@ -46,6 +62,20 @@
             test() {
                 return "Hi"
             },
+            fullNameMethod(){
+                return this.firstName + this.lastName;
+            },
+            search(){
+                fetch("/search/", {
+                    method: "POST",
+                    body: JSON.stringify({key: app.key}),
+                }).then(function (respone) {
+                    console.log(app.key)
+                    return respone.json()
+                }).then(function (json) {
+                    app.results = json
+                })
+            }
 
         },
         created: function () {
@@ -66,6 +96,26 @@
                 app.firut = json
             })
         },
+        computed: {
+            fullNameComputed: function () {
+                return this.firstName + this.lastName;
+            }
+
+        },
+        watch: {
+            firstName: function(value){
+                this.fullNameWatch = value+this.lastName
+            },
+            lastName: function(value){
+                this.fullNameWatch = this.firstName+value
+            },
+
+            key: function (val) {
+                app.search()
+
+            }
+
+        }
     });
 </script>
 </body>
